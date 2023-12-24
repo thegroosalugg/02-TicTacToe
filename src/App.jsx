@@ -27,7 +27,7 @@ function App() {
 
   const activePlayer = checkActivePlayer(gameTurns);
 
-  let gameBoard = initialBoard;
+  let gameBoard = [...initialBoard.map((array) => [...array])]; // create a deep copy of original array and aLL nested arrays as well
 
   for (const turn of gameTurns) {
     const { square, player } = turn; // uses destructuring to extract the square and player properties from the current turn object.
@@ -71,6 +71,10 @@ function App() {
     });
   }
 
+  function handleRestart() {
+    setGameTurn([]); // reset useState back to an empty array, and resets game as all other elements rely on this state
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -87,7 +91,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {(winner || draw) && <GameOver winner={winner} />}
+        {(winner || draw) && <GameOver winner={winner} onRestart={handleRestart} />}
         <GameBoard selectSquare={handleActive} board={gameBoard} />
         {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
       </div>
