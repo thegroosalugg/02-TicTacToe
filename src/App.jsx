@@ -3,19 +3,26 @@ import Player from "./components/Player";
 import Log from "./components/Log";
 import GameBoard from "./components/GameBoard";
 
+function checkActivePlayer(gameTurns) {
+  let currentPlayer = "X";
+
+  if (gameTurns.length > 0 && gameTurns[0].player === "X") {
+    // switches symbol between each player once a turn has been taken
+    currentPlayer = "O";
+  }
+
+  return currentPlayer;
+}
+
 function App() {
-  const [activePlayer, setActivePlayer] = useState("X");
   const [gameTurns, setGameTurn] = useState([]);
 
-  function handleActive(rowIndex, colIndex) {
-    // switches symbol between each player once a turn has been taken
-    setActivePlayer((currentPlayer) => (currentPlayer === "X" ? "O" : "X"));
-    setGameTurn((prevTurn) => {
-      let currentPlayer = "X";
+  const activePlayer = checkActivePlayer(gameTurns);
 
-      if (prevTurn.length > 0 && prevTurn[0].player === "X") {
-        currentPlayer = "O";
-      }
+  function handleActive(rowIndex, colIndex) {
+    setGameTurn((prevTurn) => {
+      const currentPlayer = checkActivePlayer(prevTurn);
+
       const updateTurn = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...prevTurn,
