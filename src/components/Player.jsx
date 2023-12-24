@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol }) {
+export default function Player({ initialName, symbol, isActive }) {
   const [editting, setEdit] = useState(false);
   const [playerName, setPlayerName] = useState(initialName)
 
@@ -19,7 +19,8 @@ export default function Player({ initialName, symbol }) {
   } // output value must be stored inside input (playerName), onChange is an event listener which calls a function
 
   return (
-    <li>
+    // adds active CSS class to active player or removes it
+    <li className={isActive ? 'active' : undefined}>
       <span className="player">
         {/* <span className="player-name">{initialName}</span> */}
         {editPlayerName}
