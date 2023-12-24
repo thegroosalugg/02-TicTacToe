@@ -2,6 +2,7 @@ import { useState } from "react";
 import Player from "./components/Player";
 import Log from "./components/Log";
 import GameBoard from "./components/GameBoard";
+import GameOver from "./components/GameOver";
 import { WINNING_COMBINATIONS } from "./components/winning_combinations";
 
 const initialBoard = [
@@ -55,6 +56,8 @@ function App() {
     }
   }
 
+  const draw = !winner && gameTurns.length === 9;
+
   function handleActive(rowIndex, colIndex) {
     setGameTurn((prevTurn) => {
       const currentPlayer = checkActivePlayer(prevTurn);
@@ -84,7 +87,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {winner && <p>You Won {winner}!</p>}
+        {(winner || draw) && <GameOver winner={winner} />}
         <GameBoard selectSquare={handleActive} board={gameBoard} />
         {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
       </div>
