@@ -44,7 +44,10 @@ export default function GameBoard({ selectSquare, turns }) {
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button onClick={() => selectSquare(rowIndex, colIndex)}>
+                <button
+                  onClick={() => selectSquare(rowIndex, colIndex)}
+                  disabled={playerSymbol !== null} // button is disabled if the symbol is not empty
+                >
                   {playerSymbol}
                 </button>
               </li>
