@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Player from "./components/Player";
+import Log from "./components/Log"
 import GameBoard from "./components/GameBoard";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
       </ol>
       <GameBoard selectSquare={handleActive} turns={gameTurns} />
       {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
+      <Log />
     </div>
   );
 }

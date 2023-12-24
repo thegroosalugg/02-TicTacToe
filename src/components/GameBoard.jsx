@@ -8,10 +8,13 @@ export default function GameBoard({ selectSquare, turns }) {
   let gameBoard = initialBoard;
 
   for (const turn of turns) {
-    const { square, player } = turn;
-    const { row, col } = square;
+    const { square, player } = turn; // uses destructuring to extract the square and player properties from the current turn object.
+    // The square property contains information about the position of the move, and the player property contains the symbol of the player making the move.
+    const { row, col } = square; // further destructures the square object to extract the row and col properties, representing the row and column of the move on the game board.
 
-    gameBoard[row][col] = player;
+    gameBoard[row][col] = player; // updates the gameBoard by assigning the current player's symbol (X or O) to the specified position (row, col) on the board.
+
+    // gameBoard[turn.square.row][turn.square.col] = turn.player; // the above destructing can also be written like this
   }
 
   // each row is an array. Each 'column' is a single element inside the array, and not an actual column
