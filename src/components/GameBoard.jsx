@@ -13,6 +13,7 @@ export default function GameBoard({ selectSquare, turns }) {
     const { row, col } = square; // further destructures the square object to extract the row and col properties, representing the row and column of the move on the game board.
 
     gameBoard[row][col] = player; // updates the gameBoard by assigning the current player's symbol (X or O) to the specified position (row, col) on the board.
+    // the final outcome might look liks this for instance: gameBoard[2][1] = 'X';
 
     // gameBoard[turn.square.row][turn.square.col] = turn.player; // the above destructing can also be written like this
   }

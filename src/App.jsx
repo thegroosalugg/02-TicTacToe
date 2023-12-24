@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Player from "./components/Player";
-import Log from "./components/Log"
+import Log from "./components/Log";
 import GameBoard from "./components/GameBoard";
 
 function App() {
@@ -26,24 +26,26 @@ function App() {
   }
 
   return (
-    <div id="game-container">
-      <ol id="players" className="highlight-player">
-        <Player
-          initialName="Player"
-          symbol="X"
-          isActive={activePlayer === "X"}
-        />
-        {/* passes argument to player component, isActive is a boolean prop whose value is set to true if activePlayer matches the symbol */}
-        <Player
-          initialName="Enemy"
-          symbol="O"
-          isActive={activePlayer === "O"}
-        />
-      </ol>
-      <GameBoard selectSquare={handleActive} turns={gameTurns} />
-      {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
-      <Log />
-    </div>
+    <main>
+      <div id="game-container">
+        <ol id="players" className="highlight-player">
+          <Player
+            initialName="Player"
+            symbol="X"
+            isActive={activePlayer === "X"}
+          />
+          {/* passes argument to player component, isActive is a boolean prop whose value is set to true if activePlayer matches the symbol */}
+          <Player
+            initialName="Enemy"
+            symbol="O"
+            isActive={activePlayer === "O"}
+          />
+        </ol>
+        <GameBoard selectSquare={handleActive} turns={gameTurns} />
+        {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
+      </div>
+      <Log turns={gameTurns} />
+    </main>
   );
 }
 
