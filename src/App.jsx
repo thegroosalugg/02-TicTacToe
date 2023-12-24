@@ -4,6 +4,12 @@ import Log from "./components/Log";
 import GameBoard from "./components/GameBoard";
 import { WINNING_COMBINATIONS } from "./components/winning_combinations";
 
+const initialBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
+
 function checkActivePlayer(gameTurns) {
   let currentPlayer = "X";
 
@@ -19,6 +25,35 @@ function App() {
   const [gameTurns, setGameTurn] = useState([]);
 
   const activePlayer = checkActivePlayer(gameTurns);
+
+  let gameBoard = initialBoard;
+
+  for (const turn of gameTurns) {
+    const { square, player } = turn; // uses destructuring to extract the square and player properties from the current turn object.
+    // The square property contains information about the position of the move, and the player property contains the symbol of the player making the move.
+    const { row, col } = square; // further destructures the square object to extract the row and col properties, representing the row and column of the move on the game board.
+
+    gameBoard[row][col] = player; // updates the gameBoard by assigning the current player's symbol (X or O) to the specified position (row, col) on the board.
+    // the final outcome might look liks this for instance: gameBoard[2][1] = 'X';
+
+    // gameBoard[turn.square.row][turn.square.col] = turn.player; // the above destructing can also be written like this
+  }
+
+  let winner;
+
+  for (const combination of WINNING_COMBINATIONS) {
+    const fstSquareSym = gameBoard[combination[0].row][combination[0].column];
+    const sndSquareSym = gameBoard[combination[1].row][combination[1].column];
+    const trdSquareSym = gameBoard[combination[2].row][combination[2].column];
+
+    if (
+      fstSquareSym &&
+      fstSquareSym === sndSquareSym &&
+      fstSquareSym === trdSquareSym
+    ) {
+      winner = fstSquareSym;
+    }
+  }
 
   function handleActive(rowIndex, colIndex) {
     setGameTurn((prevTurn) => {
@@ -49,7 +84,8 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        <GameBoard selectSquare={handleActive} turns={gameTurns} />
+        {winner && <p>You Won {winner}!</p>}
+        <GameBoard selectSquare={handleActive} board={gameBoard} />
         {/* selectSquare is a function passed as a prop from the App component to the GameBoard component */}
       </div>
       <Log turns={gameTurns} />
