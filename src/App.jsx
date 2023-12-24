@@ -24,6 +24,10 @@ function checkActivePlayer(gameTurns) {
 
 function App() {
   const [gameTurns, setGameTurn] = useState([]);
+  const [players, setPlayers] = useState({ // create an object where a symbol corresponds to individual name
+    X: "Player",
+    O: "Enemy",
+  });
 
   const activePlayer = checkActivePlayer(gameTurns);
 
@@ -52,7 +56,7 @@ function App() {
       fstSquareSym === sndSquareSym &&
       fstSquareSym === trdSquareSym
     ) {
-      winner = fstSquareSym;
+      winner = players[fstSquareSym]; // winner name dynamically set by accessing object with corresponding symbol
     }
   }
 
@@ -75,6 +79,12 @@ function App() {
     setGameTurn([]); // reset useState back to an empty array, and resets game as all other elements rely on this state
   }
 
+  function handleEditName(symbol, newName) { // creates copy of original names then adjusts only the name that matches the symbol
+    setPlayers((prevNames) => {
+      return { ...prevNames, [symbol]: newName };
+    });
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -83,12 +93,14 @@ function App() {
             initialName="Player"
             symbol="X"
             isActive={activePlayer === "X"}
+            onEditName={handleEditName}
           />
           {/* passes argument to player component, isActive is a boolean prop whose value is set to true if activePlayer matches the symbol */}
           <Player
             initialName="Enemy"
             symbol="O"
             isActive={activePlayer === "O"}
+            onEditName={handleEditName}
           />
         </ol>
         {(winner || draw) && <GameOver winner={winner} onRestart={handleRestart} />}
