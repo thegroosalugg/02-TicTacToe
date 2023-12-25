@@ -5,7 +5,12 @@ import GameBoard from "./components/GameBoard";
 import GameOver from "./components/GameOver";
 import { WINNING_COMBINATIONS } from "./components/winning_combinations";
 
-const initialBoard = [
+const PLAYERS = { // create an object where a symbol corresponds to individual name
+  X: "Player",
+  O: "Enemy",
+}
+
+const INITIAL_BOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
@@ -22,16 +27,8 @@ function checkActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
-function App() {
-  const [gameTurns, setGameTurn] = useState([]);
-  const [players, setPlayers] = useState({ // create an object where a symbol corresponds to individual name
-    X: "Player",
-    O: "Enemy",
-  });
-
-  const activePlayer = checkActivePlayer(gameTurns);
-
-  let gameBoard = [...initialBoard.map((array) => [...array])]; // create a deep copy of original array and aLL nested arrays as well
+function createGameBoard(gameTurns) {
+  let gameBoard = [...INITIAL_BOARD.map((array) => [...array])]; // create a deep copy of original array and aLL nested arrays as well
 
   for (const turn of gameTurns) {
     const { square, player } = turn; // uses destructuring to extract the square and player properties from the current turn object.
@@ -40,10 +37,12 @@ function App() {
 
     gameBoard[row][col] = player; // updates the gameBoard by assigning the current player's symbol (X or O) to the specified position (row, col) on the board.
     // the final outcome might look liks this for instance: gameBoard[2][1] = 'X';
-
     // gameBoard[turn.square.row][turn.square.col] = turn.player; // the above destructing can also be written like this
   }
+  return gameBoard
+}
 
+function whosTheWinner(players, gameBoard) {
   let winner;
 
   for (const combination of WINNING_COMBINATIONS) {
@@ -59,7 +58,16 @@ function App() {
       winner = players[fstSquareSym]; // winner name dynamically set by accessing object with corresponding symbol
     }
   }
+  return winner
+}
 
+function App() {
+  const [gameTurns, setGameTurn] = useState([]);
+  const [players, setPlayers] = useState(PLAYERS);
+
+  const activePlayer = checkActivePlayer(gameTurns);
+  const gameBoard = createGameBoard(gameTurns)
+  const winner = whosTheWinner(players, gameBoard)
   const draw = !winner && gameTurns.length === 9;
 
   function handleActive(rowIndex, colIndex) {
@@ -90,14 +98,14 @@ function App() {
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            initialName="Player"
+            initialName={PLAYERS.X}
             symbol="X"
             isActive={activePlayer === "X"}
             onEditName={handleEditName}
           />
           {/* passes argument to player component, isActive is a boolean prop whose value is set to true if activePlayer matches the symbol */}
           <Player
-            initialName="Enemy"
+            initialName={PLAYERS.O}
             symbol="O"
             isActive={activePlayer === "O"}
             onEditName={handleEditName}
